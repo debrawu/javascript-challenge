@@ -16,4 +16,22 @@ tableData.forEach(ufoData => {
     })
 })
 
-// select the button 
+// select the button for users to submit
+var button = d3.select('#filter-btn');
+
+// complete click handler for the form
+button.on('click', function(){
+    // select input element and get the HTML node
+    var inputElement = d3.select('#datetime');
+
+    // get value property of the input element
+    var inputValue = inputElement.property('value');
+
+    // use form input to filter data by date
+    var dataFilter = tableData.filter(sighting => sighting.datetime === inputValue)
+
+    console.log(dataFilter)
+
+    // print out the information in the empty table
+    
+})

@@ -16,6 +16,8 @@ tableData.forEach(ufoData => {
     })
 })
 
+// EVENT LISTENERS
+
 // select the button for users to submit
 var button = d3.select('#filter-btn');
 
@@ -28,10 +30,27 @@ button.on('click', function(){
     var inputValue = inputElement.property('value');
 
     // use form input to filter data by date
-    var dataFilter = tableData.filter(sighting => sighting.datetime === inputValue)
+    var dataFilter = tableData.filter(date => date.datetime === inputValue);
 
-    console.log(dataFilter)
+    console.log(dataFilter);
 
     // print out the information in the empty table
+
+    // create an empty table within the html
+    tbody.html('');
     
-})
+    // display the filtered data
+    dataFilter.forEach((sightings) => {
+
+        console.log(sightings);
+
+        // append on row for each sighting
+        var row = tbody.append('tr');
+
+        Object.entries(sightings).forEach(function([key, value]) {
+            console.log(key,value);
+            var item = row.append('td');
+            item.text(value);
+        });
+    });
+});

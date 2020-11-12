@@ -17,27 +17,36 @@ tableData.forEach(ufoData => {
 })
 
 // EVENT LISTENERS
+// track filters
+var filters={}
 
-// select the button for users to submit
-var button = d3.select('#filter-btn');
+// create a function to update the date every time an ID is changed or added 
+function updateFilters(){
+    var changedElement=d3.select(this).select('input')
+    var elementValue=changedElement.property('value')
+    var filterID=changedElement.attr('id')
+    if (elementValue) {
+        filters[filterID]=elementValue
+    } else {
+        delete filters[filterID]
+    }
+    filter()
+}
 
 // complete click handler for the form
-button.on('click', function(){
-    // select input element and get the HTML node for the DATE
-    var inputElement = d3.select('#datetime');
+d3.selectAll('.filter').on('change', updateFilters);
 
-    // get value property of the input element
-    var inputValue = inputElement.property('value');
+// create filter function 
+function filter(){
+    // tableData contains all data
+    var dataFilter=tableData
 
-    // use form input to filter data by date or city or state or country or shape
-    var dataFilter = tableData.filter(data => data.datetime === inputValue ||
-                                              data.city.toLowerCase() === inputValue ||
-                                              data.state.toLowerCase() === inputValue ||
-                                              data.country.toLowerCase() === inputValue ||
-                                              data.shape.toLowerCase() === inputValue);
-
+    // Object.entries: converts a json {key:vale} to list [key, value]
+    Object.entries(filters).forEach(([key, value])=>{
+        dataFilter=dataFilter.filter(row=>row[key]==value)
+    })
+    
     console.log(dataFilter);
-
 
     // print out the information in the empty table
 
@@ -57,4 +66,4 @@ button.on('click', function(){
             item.text(value);
         });
     });
-});
+};
